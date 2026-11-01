@@ -10,7 +10,11 @@ from gvflow.stage0_contract import finalize_stage0
 from gvflow.stage0_media import prepare_stage0
 
 
-def test_static_image_stage0_exports_one_reference_page(tmp_path: Path):
+def test_static_image_stage0_exports_one_reference_page(tmp_path: Path, monkeypatch):
+    def missing_ffprobe(*args, **kwargs):
+        raise FileNotFoundError("ffprobe")
+
+    monkeypatch.setattr("gvflow.stage0_media.subprocess.run", missing_ffprobe)
     source = tmp_path / "source.png"
     Image.new("RGB", (120, 200), "navy").save(source)
     events = tmp_path / "events.jsonl"

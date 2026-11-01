@@ -15,12 +15,13 @@ https://github.com/574210187-ship-it/ai-graphic-video-orchestrator
 
 二、离线门禁
 1. 运行./scripts/bootstrap.sh。
-2. 把skills/graphic-video-orchestrator安装到当前Harness真实使用的自定义Skill目录；先核对Harness配置，不得猜目录。可使用python3 scripts/install_skill.py --target <真实技能根目录>。
-3. 运行：
+2. 运行python3、git和ffprobe版本检查；ffprobe缺失时只报告准确安装缺口，不得把它归因于网络。
+3. 把skills/graphic-video-orchestrator安装到当前Harness真实使用的自定义Skill目录；先核对Harness配置，不得猜目录。可使用python3 scripts/install_skill.py --target <真实技能根目录>。
+4. 运行：
    - .venv/bin/pytest -q
    - .venv/bin/python scripts/secret_scan.py
    - .venv/bin/gvflow doctor --config config/example.yaml --offline
-4. 必须确认普通01/02双分支、律师单分支、失败后继续下一行、背景游标、半写回恢复这些测试全部通过。
+5. 必须确认普通01/02双分支、律师单分支、失败后继续下一行、背景游标、半写回恢复这些测试全部通过。
 
 三、本机私有配置
 1. 从示例复制config/config.local.yaml和config/business-profile.local.yaml；两份文件必须保持Git忽略。

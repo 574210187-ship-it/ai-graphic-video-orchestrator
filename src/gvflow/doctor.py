@@ -19,6 +19,7 @@ def run_doctor(config: dict, *, offline: bool = False) -> dict:
     runs.mkdir(parents=True, exist_ok=True)
     add("runs_dir_writable", os.access(runs, os.W_OK), str(runs.resolve()))
     add("python", bool(shutil.which("python3")), shutil.which("python3"))
+    add("ffprobe", bool(shutil.which("ffprobe")), shutil.which("ffprobe") or "视频第0阶段需要FFmpeg/ffprobe")
 
     engine = config["engine"]
     if engine.get("name") == "fixture":

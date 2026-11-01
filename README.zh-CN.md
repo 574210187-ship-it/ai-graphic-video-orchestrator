@@ -19,6 +19,8 @@
 
 ## 安装
 
+前置环境：Python 3.9以上、Git、FFmpeg（命令行可找到`ffprobe`）。EGO和ChatGPT登录只在真实网页测试时需要。
+
 ```bash
 git clone <仓库地址>
 cd ai-graphic-video-orchestrator

@@ -22,12 +22,15 @@ def _media_modules():
 
 
 def _probe(path: Path) -> dict:
-    proc = subprocess.run(
-        ["ffprobe", "-v", "error", "-show_streams", "-show_format", "-of", "json", str(path)],
-        capture_output=True,
-        text=True,
-        check=False,
-    )
+    try:
+        proc = subprocess.run(
+            ["ffprobe", "-v", "error", "-show_streams", "-show_format", "-of", "json", str(path)],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+    except FileNotFoundError:
+        return {"_ffprobe_missing": True}
     if proc.returncode:
         return {}
     try:
@@ -44,6 +47,8 @@ def _detect_media(path: Path, probe: dict) -> str:
         return "image"
     except Exception:
         pass
+    if probe.get("_ffprobe_missing"):
+        raise ContractError("FFPROBE_NOT_FOUND", "视频第0阶段需要安装ffprobe；静态图片不需要")
     if any(stream.get("codec_type") == "video" for stream in probe.get("streams", [])):
         return "video"
     raise ContractError("UNSUPPORTED_REFERENCE_MEDIA", str(path))

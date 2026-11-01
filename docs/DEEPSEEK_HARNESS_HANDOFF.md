@@ -5,7 +5,7 @@
 ## 一、一次性安装
 
 1. 在目标电脑克隆本仓库的私有GitHub地址。
-2. 运行`scripts/bootstrap.sh`。
+2. 确认Python 3.9以上、Git和FFmpeg可用，尤其`ffprobe -version`可正常执行；再运行`scripts/bootstrap.sh`。
 3. 把`skills/graphic-video-orchestrator`加入Harness的自定义Skill目录；若Harness只能读取固定目录，运行：
 
 ```bash
