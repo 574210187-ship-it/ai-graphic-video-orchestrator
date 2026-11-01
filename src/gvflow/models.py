@@ -30,6 +30,8 @@ class Candidate:
     record_id: str
     source_field: str
     source: Attachment
+    selection_priority: int = 1
+    selection_reason: str = "secondary_classification_matches"
     title: str = ""
     fields: dict[str, Any] = field(default_factory=dict)
 

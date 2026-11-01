@@ -47,6 +47,10 @@ def prepare_manifest(provider: RecordProvider, candidate: Candidate, config: dic
         "actor_id": config["project"]["actor_id"],
         "engine": config["engine"]["name"],
         "state": "SOURCE_DOWNLOADED",
+        "selection": {
+            "priority": candidate.selection_priority,
+            "reason": candidate.selection_reason,
+        },
         "source": {
             **candidate.source.to_dict(),
             "source_field": candidate.source_field,
@@ -67,6 +71,8 @@ def prepare_manifest(provider: RecordProvider, candidate: Candidate, config: dic
         record_id=candidate.record_id,
         actor_id=config["project"]["actor_id"],
         state="SOURCE_DOWNLOADED",
+        selection_priority=candidate.selection_priority,
+        selection_reason=candidate.selection_reason,
         source_file_token=candidate.source.file_token,
         source_sha256=source_hash,
     )

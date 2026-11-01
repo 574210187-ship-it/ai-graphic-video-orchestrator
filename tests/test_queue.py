@@ -20,6 +20,8 @@ provider: {type: fixture, fixture_file: ./records.json}
 fields:
   classification: 二次分类型
   classification_value: 图文
+  classification_fallback: 类型
+  classification_fallback_value: 图文
   source_priority: [人工_对标视频, 对标视频, 对标视频、图文]
   product: 成品
   published: 已发布
@@ -40,11 +42,21 @@ writeback: {replace_same_name: false, delete_local_media_after_verified_readback
     return load_config(config)
 
 
-def row(record_id: str, *, product=None, published=None, sources=None, route="single_no_lawyer") -> dict:
+def row(
+    record_id: str,
+    *,
+    product=None,
+    published=None,
+    sources=None,
+    route="single_no_lawyer",
+    secondary="图文",
+    primary=None,
+) -> dict:
     return {
         "record_id": record_id,
         "fields": {
-            "二次分类型": "图文",
+            "二次分类型": secondary,
+            "类型": primary,
             "人工_对标视频": sources if sources is not None else [{"name": "src.mp4", "file_token": f"tok-{record_id}"}],
             "成品": product or [],
             "已发布": published or [],
@@ -81,3 +93,29 @@ def test_non_unique_source_is_blocked_not_claimed(tmp_path: Path):
     candidates, blocked = discover_candidates(make_provider(config), config)
     assert candidates == []
     assert blocked[0]["error_code"] == "SOURCE_NOT_UNIQUE"
+
+
+def test_discover_prioritizes_secondary_graphic_then_primary_graphic(tmp_path: Path):
+    records = {
+        "files": {},
+        "records": [
+            row("primary-blank", secondary="", primary="图文"),
+            row("secondary", secondary="图文", primary="口播"),
+            row("primary-other", secondary="AI真人", primary="图文"),
+            row("both", secondary="图文", primary="图文"),
+            row("neither", secondary="口播", primary="视频"),
+        ],
+    }
+    config = write_config(tmp_path, records)
+
+    candidates, blocked = discover_candidates(make_provider(config), config)
+
+    assert blocked == []
+    assert [item.record_id for item in candidates] == ["secondary", "both", "primary-blank", "primary-other"]
+    assert [item.selection_priority for item in candidates] == [1, 1, 2, 2]
+    assert [item.selection_reason for item in candidates] == [
+        "secondary_classification_matches",
+        "secondary_classification_matches",
+        "primary_classification_matches",
+        "primary_classification_matches",
+    ]

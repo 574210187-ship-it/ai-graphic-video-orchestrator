@@ -9,6 +9,8 @@
 
 两个方向必须共用同一份业务配置、任务清单、状态机、产物校验和飞书写回器。
 
+现行候选口径取两个条件的并集：先处理`二次分类型=图文`，再处理`类型=图文`且二次分类型为空或其他值的记录；两项同时满足只领取一次。分类命中后还必须有唯一来源，并且`成品`、`已发布`两列都没有视频。
+
 ## 安全边界
 
 - 仓库不包含飞书密钥、访问令牌、cookie、真实视频、真实运行目录或聊天记录。
@@ -89,7 +91,9 @@ Set-ExecutionPolicy -Scope Process Bypass
 
 - 远程DeepSeek Harness交接：[docs/DEEPSEEK_HARNESS_HANDOFF.md](docs/DEEPSEEK_HARNESS_HANDOFF.md)
 - 第一轮远程Harness复制指令：[docs/DEEPSEEK_HARNESS_COPY_PASTE_PROMPT.md](docs/DEEPSEEK_HARNESS_COPY_PASTE_PROMPT.md)
+- Windows Harness自动补齐前置并执行全流程：[docs/DEEPSEEK_HARNESS_FULL_EXECUTION_PROMPT.md](docs/DEEPSEEK_HARNESS_FULL_EXECUTION_PROMPT.md)
 - ChatGPT Work交接：[docs/CHATGPT_WORK_HANDOFF.md](docs/CHATGPT_WORK_HANDOFF.md)
 - ChatGPT Work准备检查复制指令：[docs/CHATGPT_WORK_READINESS_PROMPT.md](docs/CHATGPT_WORK_READINESS_PROMPT.md)
+- ChatGPT Work自动补齐通道并执行全流程：[docs/CHATGPT_WORK_FULL_EXECUTION_PROMPT.md](docs/CHATGPT_WORK_FULL_EXECUTION_PROMPT.md)
 - 飞书认证、权限与写入测试：[docs/FEISHU_PREPARATION.md](docs/FEISHU_PREPARATION.md)
 - 姜律师候选行筛选口径：[docs/JIANG_LAWYER_SCOPE_POLICY.md](docs/JIANG_LAWYER_SCOPE_POLICY.md)

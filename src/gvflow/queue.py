@@ -44,14 +44,26 @@ def _classification_matches(value: Any, expected: str) -> bool:
     return str(value or "") == expected
 
 
+def _selection_priority(fields: dict, mapping: dict) -> tuple[int, str] | None:
+    if _classification_matches(fields.get(mapping["classification"]), str(mapping["classification_value"])):
+        return 1, "secondary_classification_matches"
+    fallback_field = mapping.get("classification_fallback")
+    fallback_value = mapping.get("classification_fallback_value")
+    if fallback_field and fallback_value and _classification_matches(fields.get(fallback_field), str(fallback_value)):
+        return 2, "primary_classification_matches"
+    return None
+
+
 def candidate_from_record(record: dict, config: dict) -> Candidate | None:
     record_id = str(record.get("record_id") or record.get("id") or "")
     if not record_id or record_id in {str(item) for item in config["queue"].get("denylist", [])}:
         return None
     fields = record.get("fields") or {}
     mapping = config["fields"]
-    if not _classification_matches(fields.get(mapping["classification"]), str(mapping["classification_value"])):
+    selection = _selection_priority(fields, mapping)
+    if selection is None:
         return None
+    selection_priority, selection_reason = selection
     extensions = {str(item).lower() for item in config["queue"].get("video_extensions", [])}
     if field_has_video(fields, mapping["product"], extensions) or field_has_video(fields, mapping["published"], extensions):
         return None
@@ -68,7 +80,15 @@ def candidate_from_record(record: dict, config: dict) -> Candidate | None:
     if len(source_items) != 1:
         raise ContractError("SOURCE_NOT_UNIQUE", record_id, detail={"field": source_field, "count": len(source_items)})
     title = str(fields.get(mapping.get("title", "")) or "") if mapping.get("title") else ""
-    return Candidate(record_id=record_id, source_field=source_field, source=Attachment.from_raw(source_items[0]), title=title, fields=fields)
+    return Candidate(
+        record_id=record_id,
+        source_field=source_field,
+        source=Attachment.from_raw(source_items[0]),
+        selection_priority=selection_priority,
+        selection_reason=selection_reason,
+        title=title,
+        fields=fields,
+    )
 
 
 def discover_candidates(provider: RecordProvider, config: dict) -> tuple[list[Candidate], list[dict]]:
@@ -82,4 +102,5 @@ def discover_candidates(provider: RecordProvider, config: dict) -> tuple[list[Ca
             continue
         if candidate is not None:
             candidates.append(candidate)
+    candidates.sort(key=lambda item: item.selection_priority)
     return candidates, blocked

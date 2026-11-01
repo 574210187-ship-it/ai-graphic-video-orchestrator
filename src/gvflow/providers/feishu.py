@@ -395,6 +395,8 @@ class FeishuProvider(RecordProvider):
             mapping["note"],
             mapping["execution_log"],
         }
+        if mapping.get("classification_fallback"):
+            required.add(mapping["classification_fallback"])
         missing = sorted(required - names)
         available_sources = [name for name in mapping["source_priority"] if name in names]
         unavailable_sources = [name for name in mapping["source_priority"] if name not in names]

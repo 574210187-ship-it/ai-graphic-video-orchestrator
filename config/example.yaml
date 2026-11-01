@@ -18,6 +18,8 @@ provider:
 fields:
   classification: 二次分类型
   classification_value: 图文
+  classification_fallback: 类型
+  classification_fallback_value: 图文
   source_priority:
     - 人工_对标视频
     - 对标视频

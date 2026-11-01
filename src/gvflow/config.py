@@ -108,6 +108,10 @@ def validate_config(config: dict) -> None:
     for key in required_fields:
         if not fields.get(key):
             raise ConfigError("CONFIG_FIELD_MAPPING_MISSING", key)
+    fallback_field = fields.get("classification_fallback")
+    fallback_value = fields.get("classification_fallback_value")
+    if bool(fallback_field) != bool(fallback_value):
+        raise ConfigError("CONFIG_CLASSIFICATION_FALLBACK_INCOMPLETE")
     if not isinstance(fields["source_priority"], list) or not fields["source_priority"]:
         raise ConfigError("CONFIG_SOURCE_PRIORITY_INVALID")
     if not config["project"].get("actor_id"):
