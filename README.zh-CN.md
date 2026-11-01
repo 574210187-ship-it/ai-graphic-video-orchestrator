@@ -74,4 +74,5 @@ cp config/example.yaml config/config.local.yaml
 完整部署与测试门禁见[docs/IMPLEMENTATION_ROADMAP.md](docs/IMPLEMENTATION_ROADMAP.md)。
 
 - 远程DeepSeek Harness交接：[docs/DEEPSEEK_HARNESS_HANDOFF.md](docs/DEEPSEEK_HARNESS_HANDOFF.md)
+- 第一轮远程Harness复制指令：[docs/DEEPSEEK_HARNESS_COPY_PASTE_PROMPT.md](docs/DEEPSEEK_HARNESS_COPY_PASTE_PROMPT.md)
 - ChatGPT Work交接：[docs/CHATGPT_WORK_HANDOFF.md](docs/CHATGPT_WORK_HANDOFF.md)
