@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ai-graphic-video-orchestrator"
+version = "0.1.0rc1"
+description = "Deterministic orchestration core for AI graphic-video production and verified table writeback"
+readme = "README.zh-CN.md"
+requires-python = ">=3.9"
+dependencies = [
+  "PyYAML>=6.0,<7",
+]
+
+[project.optional-dependencies]
+media = [
+  "numpy>=1.24,<3",
+  "opencv-python-headless>=4.8,<5",
+  "Pillow>=10,<12",
+]
+test = [
+  "pytest>=8,<9",
+  "jsonschema>=4.22,<5",
+]
+
+[project.scripts]
+gvflow = "gvflow.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"

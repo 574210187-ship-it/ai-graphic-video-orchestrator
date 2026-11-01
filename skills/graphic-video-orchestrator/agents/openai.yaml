@@ -1,0 +1,6 @@
+interface:
+  display_name: "图文视频全流程编排"
+  short_description: "实时领取图文任务并完成生图、生视频、写回与回读闭环"
+  default_prompt: "使用 $graphic-video-orchestrator 实时领取尚未执行的图文记录，并按测试和写回门禁完成全流程。"
+policy:
+  allow_implicit_invocation: true

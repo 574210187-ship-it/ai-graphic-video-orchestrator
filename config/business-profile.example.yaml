@@ -1,0 +1,30 @@
+schema_version: 1
+profile_name: example-business
+
+routes:
+  single_no_lawyer:
+    branches: ["01", "02"]
+  multi_no_lawyer:
+    branches: ["01", "02"]
+  single_lawyer:
+    branches: ["lawyer"]
+  multi_lawyer:
+    enabled: false
+    error_code: MULTI_PAGE_LAWYER_SUSPENDED
+
+space:
+  image_rules:
+    single_01: {path: /replace/in/private/config/single01.md, version: v1}
+    single_02: {path: /replace/in/private/config/single02.md, version: v1}
+    multi_01: {path: /replace/in/private/config/multi01.md, version: v1}
+    multi_02: {path: /replace/in/private/config/multi02.md, version: v1}
+    single_lawyer: {path: /replace/in/private/config/lawyer.md, version: v1}
+  video_rules:
+    single: /replace/in/private/config/video-single.zip
+    multi: /replace/in/private/config/video-multi.zip
+  backgrounds:
+    - /replace/in/private/config/background01.png
+    - /replace/in/private/config/background02.png
+    - /replace/in/private/config/background03.png
+  portraits:
+    - /replace/in/private/config/portrait01.png

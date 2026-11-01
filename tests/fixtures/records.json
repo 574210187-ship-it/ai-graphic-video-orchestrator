@@ -1,0 +1,22 @@
+{
+  "files": {
+    "source-token-1": "source.bin"
+  },
+  "records": [
+    {
+      "record_id": "rec-fixture-1",
+      "fields": {
+        "二次分类型": "图文",
+        "人工_对标视频": [
+          {"name": "reference.mp4", "file_token": "source-token-1", "size": 21}
+        ],
+        "成品": [],
+        "已发布": [],
+        "状态": "未制作",
+        "zed备注": "",
+        "执行记录": "",
+        "测试路线": "single_no_lawyer"
+      }
+    }
+  ]
+}

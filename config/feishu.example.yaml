@@ -1,0 +1,11 @@
+schema_version: 1
+provider:
+  type: feishu
+  app_id: ${FEISHU_APP_ID}
+  secret:
+    backend: macos_keychain
+    service: replace-keychain-service
+    account: ${FEISHU_APP_ID}
+  app_token: replace-base-app-token
+  table_id: replace-table-id
+  api_root: https://open.feishu.cn/open-apis

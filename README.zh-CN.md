@@ -1,0 +1,77 @@
+# AI 图文视频全流程编排器
+
+本仓库把“从多维表领取未执行图文记录，到生成视频、上传成品、写入状态并实时回读”的流程拆成一个确定性核心和多个 AI 控制器适配器。
+
+当前目标控制器：
+
+- 网页版 ChatGPT Work：负责任务判断、子聊天调度和异常修复；原生子聊天能力不足时使用本地 Work Bridge。
+- DeepSeek Harness/Honey：负责全流程调度，通过 EGO 浏览器操作 ChatGPT 普通聊天完成生图和生视频。
+
+两个方向必须共用同一份业务配置、任务清单、状态机、产物校验和飞书写回器。
+
+## 安全边界
+
+- 仓库不包含飞书密钥、访问令牌、cookie、真实视频、真实运行目录或聊天记录。
+- 默认配置为`production.enabled: false`，没有显式启用时禁止写生产表。
+- 飞书写入必须完成同记录实时回读；回读不一致不得标记完成。
+- 同一个 Base 同一时间只允许一个生产写入者，除非配置了跨机器租约字段。
+- 测试先使用夹具或专用测试记录，不覆盖真实业务数据。
+
+## 安装
+
+```bash
+git clone <仓库地址>
+cd ai-graphic-video-orchestrator
+./scripts/bootstrap.sh
+cp config/example.yaml config/config.local.yaml
+```
+
+编辑`config/config.local.yaml`，填写本机工作目录、飞书 Base/Table、字段映射、Space 规则路径和控制器命令。密钥只通过环境变量或系统钥匙串读取，不写入配置。
+
+## 最小验证
+
+```bash
+.venv/bin/gvflow doctor --config config/config.local.yaml --offline
+.venv/bin/pytest -q
+```
+
+## AI原生执行顺序
+
+```bash
+# 只读扫描
+.venv/bin/gvflow discover --config config/config.local.yaml
+
+# 为一条记录下载来源并建立任务清单
+.venv/bin/gvflow prepare --config config/config.local.yaml --record-id REC_ID
+
+# 提取第0阶段候选帧/接触表
+.venv/bin/gvflow stage0-prepare --config config/config.local.yaml --record-id REC_ID
+
+# AI检查接触表，写入decision.json后固化路由和对标完整页
+.venv/bin/gvflow finalize-stage0 --config config/config.local.yaml \
+  --record-id REC_ID --decision-file /absolute/path/decision.json
+
+# 普通路线先预留本行蓝色背景；律师路线不执行本命令
+.venv/bin/gvflow reserve-background --config config/config.local.yaml --record-id REC_ID
+
+# 生成网页控制器要逐步执行的精确动作清单和提示词
+.venv/bin/gvflow plan --config config/config.local.yaml --record-id REC_ID
+
+# AI按execution_plan.json用网页完成各分支后，登记真实本地MP4
+.venv/bin/gvflow record-result --config config/config.local.yaml --record-id REC_ID \
+  --route single_no_lawyer \
+  --artifact 01:/absolute/branch01_final_animation.mp4 \
+  --artifact 02:/absolute/branch02_final_animation.mp4 \
+  --chat-url 01:https://chatgpt.com/c/... \
+  --chat-url 02:https://chatgpt.com/c/...
+
+# 校验、上传、写状态、执行记录并实时回读
+.venv/bin/gvflow writeback --config config/config.local.yaml --record-id REC_ID
+
+# AI按Skill循环上述流程，单行失败留证并跳过，最终必须重新实时扫描为0
+```
+
+完整部署与测试门禁见[docs/IMPLEMENTATION_ROADMAP.md](docs/IMPLEMENTATION_ROADMAP.md)。
+
+- 远程DeepSeek Harness交接：[docs/DEEPSEEK_HARNESS_HANDOFF.md](docs/DEEPSEEK_HARNESS_HANDOFF.md)
+- ChatGPT Work交接：[docs/CHATGPT_WORK_HANDOFF.md](docs/CHATGPT_WORK_HANDOFF.md)
