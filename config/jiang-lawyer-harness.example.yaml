@@ -1,0 +1,58 @@
+schema_version: 1
+
+project:
+  name: jiang-lawyer-graphic-video
+  actor_id: replace-with-this-computer-harness-actor-id
+  runs_dir: ../runs
+
+production:
+  enabled: false
+  single_writer_required: true
+  max_attempts_per_record: 3
+  continue_after_record_failure: true
+
+provider:
+  type: feishu
+  app_id: ${FEISHU_APP_ID}
+  secret:
+    backend: env
+    name: FEISHU_APP_SECRET
+  app_token: replace-base-app-token
+  table_id: replace-business-table-id
+  api_root: https://open.feishu.cn/open-apis
+
+fields:
+  classification: 二次分类型
+  classification_value: 图文
+  source_priority: [人工_对标视频, 对标视频, 对标视频、图文]
+  product: 成品
+  published: 已发布
+  status: 状态
+  completed_status: 完成视频
+  note: zed备注
+  execution_log: 执行记录
+  title: 人工_对标标题
+
+queue:
+  mode: both_output_columns_without_video
+  video_extensions: [.mp4, .mov, .m4v, .webm, .mkv]
+  denylist: []
+
+business:
+  profile_name: jiang-lawyer-v4.2
+  route_config: ./profiles/jiang-lawyer-v4.2.yaml
+  stage0_command: []
+  planner_command: []
+
+engine:
+  name: deepseek-harness-ego
+  mode: agent_native
+  command: []
+  timeout_seconds: 3600
+
+writeback:
+  replace_same_name: false
+  delete_local_media_after_verified_readback: true
+
+artifacts:
+  minimum_mp4_bytes: 200000

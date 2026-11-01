@@ -12,8 +12,8 @@
 python3 scripts/install_skill.py --target /目标电脑/Harness技能根目录
 ```
 
-4. 复制`config/example.yaml`为`config/config.local.yaml`，复制`config/business-profile.example.yaml`为`config/business-profile.local.yaml`。
-5. 只在目标电脑私有配置中填写飞书Base/Table、字段、Space路径、规则版本、运行目录与唯一ActorID。密钥只放环境变量或系统钥匙串，禁止提交Git。
+4. 姜律师项目复制`config/jiang-lawyer-harness.example.yaml`为`config/config.local.yaml`；仓库已包含当前五份MD、两个视频包、三张背景与七张人物照的Space路径和版本profile，不要重复手填。其他项目才从通用示例开始。
+5. 只在目标电脑私有配置中填写飞书Base/Table、本机运行目录与唯一ActorID。密钥只放环境变量或系统钥匙串，禁止提交Git。
 6. 确认目标电脑已经安装并登录EGO浏览器和ChatGPT网页；使用后台TaskSpace，不抢占用户前台浏览器。
 
 ## 二、强制测试门禁

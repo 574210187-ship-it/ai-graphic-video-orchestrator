@@ -30,6 +30,8 @@ cp config/example.yaml config/config.local.yaml
 
 编辑`config/config.local.yaml`，填写本机工作目录、飞书 Base/Table、字段映射、Space 规则路径和控制器命令。密钥只通过环境变量或系统钥匙串读取，不写入配置。
 
+姜律师项目优先复制`config/jiang-lawyer-harness.example.yaml`或`config/jiang-lawyer-work.example.yaml`；现行Space业务profile已在`config/profiles/jiang-lawyer-v4.2.yaml`，目标电脑无需重复填写固定素材路径。
+
 ## 最小验证
 
 ```bash

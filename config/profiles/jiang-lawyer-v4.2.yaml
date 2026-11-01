@@ -1,0 +1,31 @@
+schema_version: 1
+profile_name: jiang-lawyer-v4.2
+
+routes:
+  single_no_lawyer: {branches: ["01", "02"]}
+  multi_no_lawyer: {branches: ["01", "02"]}
+  single_lawyer: {branches: ["lawyer"]}
+  multi_lawyer: {enabled: false, error_code: MULTI_PAGE_LAWYER_SUSPENDED}
+
+space:
+  image_rules:
+    single_01: {path: /jiang姜律师/姜律师图文/单页jiang01pic.md, version: v38}
+    single_02: {path: /jiang姜律师/姜律师图文/单页jiang02pic.md, version: v30}
+    multi_01: {path: /jiang姜律师/姜律师图文/多页jiang01pic.md, version: v29}
+    multi_02: {path: /jiang姜律师/姜律师图文/多页jiang02pic.md, version: v27}
+    single_lawyer: {path: /jiang姜律师/姜律师图文/单页姜律师.md, version: v9}
+  video_rules:
+    single: /jiang姜律师/姜律师图文/【图文】姜律师Video单页.zip
+    multi: /jiang姜律师/姜律师图文/【图文】姜律师Video多页.zip
+  backgrounds:
+    - /jiang姜律师/姜律师图文/jiang01pic蓝色背景_图片/蓝色背景01.png
+    - /jiang姜律师/姜律师图文/jiang01pic蓝色背景_图片/蓝色背景02.png
+    - /jiang姜律师/姜律师图文/jiang01pic蓝色背景_图片/蓝色背景03.png
+  portraits:
+    - /jiang姜律师/jiangpic_图片/姜律师形象照_01_商务抱臂蓝西装.jpeg
+    - /jiang姜律师/jiangpic_图片/姜律师形象照_02_正面黑西装红领带.jpeg
+    - /jiang姜律师/jiangpic_图片/姜律师形象照_03_坐姿看手机深蓝西装.jpeg
+    - /jiang姜律师/jiangpic_图片/姜律师形象照_04_白衬衫站姿.jpeg
+    - /jiang姜律师/jiangpic_图片/姜律师形象照_05_会议桌灰西装侧向坐姿.png
+    - /jiang姜律师/jiangpic_图片/姜律师形象照_06_会议桌打电话.jpeg
+    - /jiang姜律师/jiangpic_图片/姜律师形象照_07_律师工作服.jpeg

@@ -24,6 +24,8 @@ def run_doctor(config: dict, *, offline: bool = False) -> dict:
     engine = config["engine"]
     if engine.get("name") == "fixture":
         add("engine_fixture", True)
+    elif engine.get("mode") == "agent_native":
+        add("engine_agent_native", True, engine.get("name"))
     else:
         command = engine.get("command") or []
         first = command[0] if isinstance(command, list) and command else None

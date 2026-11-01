@@ -24,8 +24,8 @@ https://github.com/574210187-ship-it/ai-graphic-video-orchestrator
 5. 必须确认普通01/02双分支、律师单分支、失败后继续下一行、背景游标、半写回恢复这些测试全部通过。
 
 三、本机私有配置
-1. 从示例复制config/config.local.yaml和config/business-profile.local.yaml；两份文件必须保持Git忽略。
-2. 根据当前电脑的飞书身份、运行目录、唯一ActorID、EGO和Space实际情况调整，不得照抄其他电脑绝对路径。
+1. 复制config/jiang-lawyer-harness.example.yaml为config/config.local.yaml；该文件必须保持Git忽略。直接使用仓库内config/profiles/jiang-lawyer-v4.2.yaml，不要自行重写五份MD、视频包、背景和人物路径。
+2. 根据当前电脑的飞书身份、运行目录、唯一ActorID和EGO实际情况调整，不得照抄其他电脑绝对路径。
 3. 飞书密钥只用当前电脑环境变量或系统安全存储，不写进仓库、日志或回复。
 4. 保持production.enabled=false。
 
