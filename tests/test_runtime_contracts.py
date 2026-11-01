@@ -10,7 +10,7 @@ from gvflow.manifest import update_manifest
 from gvflow.planner import build_execution_plan
 from gvflow.queue import make_provider
 from gvflow.rotation import abort_background, commit_background, reserve_background
-from gvflow.workflow import prepare, record_controller_result, writeback
+from gvflow.workflow import prepare, record_controller_result, verify_write_access, writeback
 
 from test_artifacts import fake_mp4
 from test_queue import row, write_config
@@ -122,3 +122,19 @@ def test_partial_attachment_writeback_resumes_without_duplicate(tmp_path: Path):
     state = json.loads((tmp_path / "rotation.json").read_text(encoding="utf-8"))
     assert state["next_index"] == 2
     assert state["pending"] is None
+
+
+def test_verify_write_access_uploads_reads_back_and_restores_empty_product(tmp_path: Path):
+    config, _ = prepared_config(tmp_path)
+    result = verify_write_access(config, "normal", confirmed_dedicated_test_record=True)
+    assert result["attachment_upload_verified"] is True
+    assert result["field_write_verified"] is True
+    assert result["restored_to_original"] is True
+    fields = make_provider(config).get_record("normal")["fields"]
+    assert fields["\u6210\u54c1"] == []
+
+
+def test_verify_write_access_requires_explicit_dedicated_record_confirmation(tmp_path: Path):
+    config, _ = prepared_config(tmp_path)
+    with pytest.raises(ContractError, match="DEDICATED_TEST_RECORD_CONFIRMATION_REQUIRED"):
+        verify_write_access(config, "normal", confirmed_dedicated_test_record=False)

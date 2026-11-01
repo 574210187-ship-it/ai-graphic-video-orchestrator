@@ -10,7 +10,7 @@ from .doctor import run_doctor
 from .errors import GvflowError
 from .stage0_contract import finalize_stage0
 from .stage0_media import prepare_stage0
-from .workflow import discover, drain, execute, prepare, record_controller_result, writeback
+from .workflow import discover, drain, execute, prepare, record_controller_result, verify_write_access, writeback
 
 
 def emit(value: dict, code: int = 0) -> int:
@@ -68,6 +68,11 @@ def parser() -> argparse.ArgumentParser:
     command = sub.add_parser("writeback")
     command.add_argument("--config", required=True)
     command.add_argument("--record-id", required=True)
+
+    command = sub.add_parser("verify-write-access")
+    command.add_argument("--config", required=True)
+    command.add_argument("--record-id", required=True)
+    command.add_argument("--confirm-dedicated-test-record", action="store_true", required=True)
 
     command = sub.add_parser("drain")
     command.add_argument("--config", required=True)
@@ -127,6 +132,8 @@ def main(argv: list[str] | None = None) -> int:
             ))
         if args.command == "writeback":
             return emit(writeback(config, args.record_id))
+        if args.command == "verify-write-access":
+            return emit(verify_write_access(config, args.record_id, confirmed_dedicated_test_record=args.confirm_dedicated_test_record))
         if args.command == "drain":
             result = drain(config, limit=args.limit)
             return emit(result, 0 if result["scope_drained"] else 3)

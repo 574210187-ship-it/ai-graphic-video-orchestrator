@@ -231,6 +231,45 @@ def writeback(config: dict, record_id: str) -> dict:
     return {"ok": True, "record_id": record_id, "route": result["route"], "attachments": attached, "readback_verified": True}
 
 
+def verify_write_access(config: dict, record_id: str, *, confirmed_dedicated_test_record: bool) -> dict:
+    if not confirmed_dedicated_test_record:
+        raise ContractError("DEDICATED_TEST_RECORD_CONFIRMATION_REQUIRED")
+    provider = make_provider(config)
+    mapping = config["fields"]
+    before = provider.get_record(record_id)
+    before_fields = before.get("fields") or {}
+    original_product = before_fields.get(mapping["product"]) or []
+    if original_product:
+        raise ContractError("PREFLIGHT_TEST_RECORD_PRODUCT_NOT_EMPTY", record_id)
+    test_dir = _runs_dir(config) / "_access_check" / record_id
+    test_dir.mkdir(parents=True, exist_ok=True)
+    artifact = test_dir / "gvflow_write_access_probe.mp4"
+    artifact.write_bytes(b"\x00\x00\x00\x18ftypmp42\x00\x00\x00\x00mp42isom" + b"gvflow-access-probe" * 16_384)
+    attached = provider.attach_files(record_id, mapping["product"], [artifact], replace_same_name=True)
+    added = attached.get("added") or []
+    if len(added) != 1 or not added[0].get("file_token"):
+        raise ContractError("PREFLIGHT_ATTACHMENT_UPLOAD_NOT_VERIFIED", detail=attached)
+    provider.update_fields(record_id, {mapping["product"]: []})
+    restored = provider.get_record(record_id)
+    restored_product = (restored.get("fields") or {}).get(mapping["product"]) or []
+    if restored_product:
+        raise ContractError(
+            "PREFLIGHT_TEST_RECORD_RESTORE_FAILED",
+            record_id,
+            detail={"uploaded_file_token": added[0].get("file_token"), "current": restored_product},
+        )
+    return {
+        "ok": True,
+        "operation": "verify_write_access",
+        "record_id": record_id,
+        "attachment_upload_verified": True,
+        "field_write_verified": True,
+        "restored_to_original": True,
+        "uploaded_file_token": added[0].get("file_token"),
+        "note": "专用测试记录已恢复为空成品；平台自动更新时间可能变化",
+    }
+
+
 def drain(config: dict, *, limit: int | None = None) -> dict:
     provider = make_provider(config)
     if config["provider"].get("type") != "fixture" and not config["production"].get("enabled"):

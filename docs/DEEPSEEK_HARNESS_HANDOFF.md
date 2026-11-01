@@ -2,19 +2,30 @@
 
 本文件用于另一台电脑上的DeepSeek Harness。Harness不在仓库制作电脑上；不得引用制作电脑的进程、路径或登录态。
 
-## 一、一次性安装
+## 一、Windows一次性安装
 
 1. 在目标电脑克隆本仓库的私有GitHub地址。
-2. 确认Python 3.9以上、Git和FFmpeg可用，尤其`ffprobe -version`可正常执行；再运行`scripts/bootstrap.sh`。
-3. 把`skills/graphic-video-orchestrator`加入Harness的自定义Skill目录；若Harness只能读取固定目录，运行：
+2. 确认Python 3.9以上、Git和FFmpeg可用，尤其`ffprobe -version`可正常执行。
+3. 在PowerShell里执行：
 
-```bash
-python3 scripts/install_skill.py --target /目标电脑/Harness技能根目录
+```powershell
+Set-ExecutionPolicy -Scope Process Bypass
+.\scripts\bootstrap.ps1
+.\scripts\setup_windows_feishu.ps1
 ```
 
-4. 姜律师项目复制`config/jiang-lawyer-harness.example.yaml`为`config/config.local.yaml`；仓库已包含当前五份MD、两个视频包、三张背景与七张人物照的Space路径和版本profile，不要重复手填。其他项目才从通用示例开始。
-5. 只在目标电脑私有配置中填写飞书Base/Table、本机运行目录与唯一ActorID。密钥只放环境变量或系统钥匙串，禁止提交Git。
-6. 确认目标电脑已经安装并登录EGO浏览器和ChatGPT网页；使用后台TaskSpace，不抢占用户前台浏览器。
+`setup_windows_feishu.ps1`会建立本机私有配置、请求唯一ActorID、在Windows凭据管理器保存App Secret，并只读执行飞书`doctor`和`discover`。脚本不会打开生产开关。
+
+4. App Secret只在Windows电脑本机安全输入，不得发到Harness对话、GitHub、Markdown或日志。
+5. 飞书管理端还必须确认应用已发布、有多维表格编辑权限，并被添加为目标Base的可编辑文档应用/协作者。完整门禁见`docs/FEISHU_PREPARATION.md`。
+6. 把`skills/graphic-video-orchestrator`加入Harness的自定义Skill目录；若Harness只能读取固定目录，运行：
+
+```powershell
+.venv\Scripts\python.exe scripts\install_skill.py --target <Harness实际技能根目录>
+```
+
+7. 姜律师Windows配置模板是`config/jiang-lawyer-harness.windows.example.yaml`；安装脚本会复制为Git忽略的`config/config.local.yaml`。仓库已包含当前五份MD、两个视频包、三张背景与七张人物照的Space路径和版本profile。
+8. 确认目标电脑已经安装并登录EGO浏览器和ChatGPT网页；使用后台TaskSpace，不抢占用户前台浏览器。EGO已安装不等于飞书已接通。
 
 ## 二、强制测试门禁
 
@@ -23,8 +34,9 @@ python3 scripts/install_skill.py --target /目标电脑/Harness技能根目录
 1. `gvflow doctor --offline`和`pytest -q`。
 2. fixture端到端：普通双分支、律师单分支、单行失败后继续下一行、半写回恢复。
 3. 飞书只读`doctor`和`discover`，核对候选数量和字段，不写表。
-4. 三条专用测试记录：普通单页、普通多页、单页中心律师。逐条完成网页生成、真实MP4、飞书写回和实时回读。
-5. 重启Harness后重新`discover`，已完成测试记录不得再次领取。
+4. 用一条专用空成品测试记录执行`verify-write-access`，证明附件上传、附件字段写入、实时回读和恢复为空全部成功。不得使用生产行。
+5. 三条专用业务测试记录：普通单页、普通多页、单页中心律师。逐条完成网页生成、真实MP4、飞书写回和实时回读。
+6. 重启Harness后重新`discover`，已完成测试记录不得再次领取。
 
 ## 三、每条记录的固定动作
 

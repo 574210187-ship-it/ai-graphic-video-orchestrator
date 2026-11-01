@@ -32,6 +32,16 @@ cp config/example.yaml config/config.local.yaml
 
 姜律师项目优先复制`config/jiang-lawyer-harness.example.yaml`或`config/jiang-lawyer-work.example.yaml`；现行Space业务profile已在`config/profiles/jiang-lawyer-v4.2.yaml`，目标电脑无需重复填写固定素材路径。
 
+Windows DeepSeek Harness请不要照抄macOS命令，使用：
+
+```powershell
+Set-ExecutionPolicy -Scope Process Bypass
+.\scripts\bootstrap.ps1
+.\scripts\setup_windows_feishu.ps1
+```
+
+脚本只做安装、Windows凭据库保密和飞书只读盘点；写权限还必须用专用测试记录验证。完整前置见[docs/FEISHU_PREPARATION.md](docs/FEISHU_PREPARATION.md)。
+
 ## 最小验证
 
 ```bash
@@ -80,3 +90,6 @@ cp config/example.yaml config/config.local.yaml
 - 远程DeepSeek Harness交接：[docs/DEEPSEEK_HARNESS_HANDOFF.md](docs/DEEPSEEK_HARNESS_HANDOFF.md)
 - 第一轮远程Harness复制指令：[docs/DEEPSEEK_HARNESS_COPY_PASTE_PROMPT.md](docs/DEEPSEEK_HARNESS_COPY_PASTE_PROMPT.md)
 - ChatGPT Work交接：[docs/CHATGPT_WORK_HANDOFF.md](docs/CHATGPT_WORK_HANDOFF.md)
+- ChatGPT Work准备检查复制指令：[docs/CHATGPT_WORK_READINESS_PROMPT.md](docs/CHATGPT_WORK_READINESS_PROMPT.md)
+- 飞书认证、权限与写入测试：[docs/FEISHU_PREPARATION.md](docs/FEISHU_PREPARATION.md)
+- 姜律师候选行筛选口径：[docs/JIANG_LAWYER_SCOPE_POLICY.md](docs/JIANG_LAWYER_SCOPE_POLICY.md)

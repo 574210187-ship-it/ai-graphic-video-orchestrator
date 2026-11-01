@@ -17,4 +17,6 @@
 
 ## 密钥后端
 
-优先使用macOS Keychain或等效系统密钥库。环境变量只用于临时CI测试；不得把真实`.env`提交Git。
+优先使用操作系统密钥库：macOS使用`macos_keychain`，Windows使用`windows_credential`。Windows目标名和账号写在配置中，App Secret由`scripts/setup_windows_feishu.ps1`安全写入Windows凭据管理器。环境变量只用于临时CI测试；不得把真实`.env`提交Git。
+
+EGO已安装不代表飞书已就绪。还要单独验证应用scope、目标Base文档权限、附件上传、字段更新和实时回读。见`docs/FEISHU_PREPARATION.md`。

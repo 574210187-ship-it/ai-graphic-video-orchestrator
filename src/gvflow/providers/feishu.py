@@ -43,6 +43,58 @@ def _secret_from_config(secret_config: dict, app_id: str) -> str:
         if not value:
             raise ProviderError("FEISHU_KEYCHAIN_SECRET_EMPTY")
         return value
+    if backend == "windows_credential":
+        if os.name != "nt":
+            raise ConfigError("FEISHU_WINDOWS_CREDENTIAL_REQUIRES_WINDOWS")
+        target = str(secret_config.get("target") or "")
+        expected_account = str(secret_config.get("account") or app_id)
+        if not target:
+            raise ConfigError("FEISHU_WINDOWS_CREDENTIAL_TARGET_REQUIRED")
+        try:
+            import ctypes
+            from ctypes import wintypes
+
+            class CredentialW(ctypes.Structure):
+                _fields_ = [
+                    ("Flags", wintypes.DWORD),
+                    ("Type", wintypes.DWORD),
+                    ("TargetName", wintypes.LPWSTR),
+                    ("Comment", wintypes.LPWSTR),
+                    ("LastWritten", wintypes.FILETIME),
+                    ("CredentialBlobSize", wintypes.DWORD),
+                    ("CredentialBlob", ctypes.POINTER(ctypes.c_ubyte)),
+                    ("Persist", wintypes.DWORD),
+                    ("AttributeCount", wintypes.DWORD),
+                    ("Attributes", ctypes.c_void_p),
+                    ("TargetAlias", wintypes.LPWSTR),
+                    ("UserName", wintypes.LPWSTR),
+                ]
+
+            credential_pointer = ctypes.POINTER(CredentialW)()
+            advapi32 = ctypes.WinDLL("Advapi32.dll", use_last_error=True)
+            advapi32.CredReadW.argtypes = [wintypes.LPCWSTR, wintypes.DWORD, wintypes.DWORD, ctypes.POINTER(ctypes.POINTER(CredentialW))]
+            advapi32.CredReadW.restype = wintypes.BOOL
+            advapi32.CredFree.argtypes = [ctypes.c_void_p]
+            if not advapi32.CredReadW(target, 1, 0, ctypes.byref(credential_pointer)):
+                raise ProviderError("FEISHU_WINDOWS_CREDENTIAL_MISSING", f"target={target}", detail={"winerror": ctypes.get_last_error()})
+            try:
+                credential = credential_pointer.contents
+                if expected_account and credential.UserName != expected_account:
+                    raise ProviderError(
+                        "FEISHU_WINDOWS_CREDENTIAL_ACCOUNT_MISMATCH",
+                        detail={"target": target, "expected": expected_account, "actual": credential.UserName},
+                    )
+                blob = ctypes.string_at(credential.CredentialBlob, credential.CredentialBlobSize)
+                value = blob.decode("utf-16-le")
+            finally:
+                advapi32.CredFree(credential_pointer)
+        except ProviderError:
+            raise
+        except Exception as exc:
+            raise ProviderError("FEISHU_WINDOWS_CREDENTIAL_READ_FAILED", f"target={target}") from exc
+        if not value:
+            raise ProviderError("FEISHU_WINDOWS_CREDENTIAL_EMPTY", f"target={target}")
+        return value
     raise ConfigError("FEISHU_SECRET_BACKEND_UNSUPPORTED", str(backend))
 
 
@@ -318,7 +370,16 @@ class FeishuProvider(RecordProvider):
         rid = urllib.parse.quote(record_id, safe="")
         self._json_request("PUT", self._table_path(f"/records/{rid}"), payload={"fields": fields})
         actual = self.get_record(record_id).get("fields") or {}
-        mismatches = {key: {"expected": expected, "actual": actual.get(key)} for key, expected in fields.items() if actual.get(key) != expected}
+        def matches(expected: Any, observed: Any) -> bool:
+            if isinstance(expected, list) and all(isinstance(item, dict) and item.get("file_token") for item in expected):
+                if not isinstance(observed, list):
+                    return False
+                expected_tokens = [str(item.get("file_token")) for item in expected]
+                observed_tokens = [str(item.get("file_token")) for item in observed if isinstance(item, dict) and item.get("file_token")]
+                return expected_tokens == observed_tokens
+            return observed == expected
+
+        mismatches = {key: {"expected": expected, "actual": actual.get(key)} for key, expected in fields.items() if not matches(expected, actual.get(key))}
         if mismatches:
             raise ProviderError("FEISHU_FIELD_READBACK_MISMATCH", detail=mismatches)
         return {"ok": True, "verify": {"ok": True, "checked_fields": list(fields)}}

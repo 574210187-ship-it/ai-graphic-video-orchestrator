@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import os
 import shutil
+import sys
 from pathlib import Path
 
 from .queue import make_provider
@@ -18,7 +19,8 @@ def run_doctor(config: dict, *, offline: bool = False) -> dict:
         runs = Path(config["_config_dir"]) / runs
     runs.mkdir(parents=True, exist_ok=True)
     add("runs_dir_writable", os.access(runs, os.W_OK), str(runs.resolve()))
-    add("python", bool(shutil.which("python3")), shutil.which("python3"))
+    python_path = Path(sys.executable)
+    add("python", python_path.is_file(), str(python_path))
     add("ffprobe", bool(shutil.which("ffprobe")), shutil.which("ffprobe") or "视频第0阶段需要FFmpeg/ffprobe")
 
     engine = config["engine"]
@@ -37,7 +39,8 @@ def run_doctor(config: dict, *, offline: bool = False) -> dict:
         add("provider", True, "offline-skipped")
     else:
         try:
-            add("provider", True, make_provider(config).doctor())
+            provider_result = make_provider(config).doctor()
+            add("provider", bool(provider_result.get("ok")), provider_result)
         except Exception as exc:
             add("provider", False, str(exc))
     if config["provider"].get("type") != "fixture":
