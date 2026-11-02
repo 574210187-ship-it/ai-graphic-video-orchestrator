@@ -1,0 +1,31 @@
+{
+  "bundle_id": "jiang-lawyer-graphic-v4.2-materials-verified-20261024",
+  "bundle_date": "2026-10-24",
+  "source_status": "local_snapshot_verified_not_authority_latest",
+  "authority_latest_reported": {
+    "single_01": "v38",
+    "single_02": "v30",
+    "multi_01": "v29",
+    "multi_02": "v27",
+    "single_lawyer": "v9",
+    "authority_turn": "turn_image_window_20261029_five_md_authorized_replacement_01",
+    "raw_md_bytes_in_bundle": false
+  },
+  "active_routes": ["single_01", "single_02", "multi_01", "multi_02", "single_lawyer"],
+  "suspended_routes": ["single_03", "multi_03", "multi_lawyer"],
+  "files": {
+    "md/【图文】单多页jiang00pic.md": "7eb056a6fbbcd6388bd2a877970a38f4105b101faccd7cb9ca00297a2213212a",
+    "md/【图文】单页jiang01pic.md": "755f2b40481d29b7e65be9ba79eb674745cf6777b6c56e56bc6e92c27187df42",
+    "md/【图文】单页jiang02pic.md": "f90c094d34a42c5f60cca738dee0eca235aab1b3f5b5d9a00f9ed8e6caa9a358",
+    "md/【图文】多页jiang01pic.md": "e127b029ba01e48bceecf20d79c7ac33bbe7a1691c4452e7d84be94b1c30a178",
+    "md/【图文】多页jiang02pic.md": "9a29294111a65811d7e2c5b87b0069ac560b72a37f5b602b3fc52aea554c8fc1",
+    "md/【图文】单页姜律师.md": "8e9c0420903be76cb5452a841ae2ac65692a67734ff0a7c7afcecc17c51ba812",
+    "md/【图文】单页jiang03pic.md": "0bb8f73b859bb6d75a913c270b0d0e7e612a5e55aaf8578a957f390bf0d62e5f",
+    "md/【图文】多页jiang03pic.md": "0c7a37e28af40c06b844e6ea5b4987f2b4bedbef1ff101be782959df0e5bf81b",
+    "md/【图文】多页姜律师.md": "44642b6bcdc6d2ead446d8c09051e7533297aa648e393ffab78f4a59c90c4e81",
+    "video/【图文】姜律师Video单页.zip": "6bccbba0c8e79172ba4eebd15233b50cfbbee8804088dce542780ea9cf7d3585",
+    "video/【图文】姜律师Video多页.zip": "432c3c020b80dae51cb47d8c189a314da22f39d8050257bdc1bb021de7f6c596",
+    "fixed/jiang01pic蓝色背景.zip": "bbc487cb5b7e85298e6d5de48fb4e61ba0ae93fb2b4a8f0cffef6f38186d304",
+    "fixed/jiangpic.zip": "701ff70580a83cf3cd0163313ac52cffc5b0ffa843f7e63402036b42c2127381"
+  }
+}
