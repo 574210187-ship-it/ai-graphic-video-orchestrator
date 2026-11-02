@@ -97,3 +97,4 @@ Set-ExecutionPolicy -Scope Process Bypass
 - ChatGPT Work自动补齐通道并执行全流程：[docs/CHATGPT_WORK_FULL_EXECUTION_PROMPT.md](docs/CHATGPT_WORK_FULL_EXECUTION_PROMPT.md)
 - 飞书认证、权限与写入测试：[docs/FEISHU_PREPARATION.md](docs/FEISHU_PREPARATION.md)
 - 姜律师候选行筛选口径：[docs/JIANG_LAWYER_SCOPE_POLICY.md](docs/JIANG_LAWYER_SCOPE_POLICY.md)
+- 原图文接手窗口的公开长期记忆：[docs/WINDOW_MEMORY_GRAPHIC_TAKEOVER.md](docs/WINDOW_MEMORY_GRAPHIC_TAKEOVER.md)
