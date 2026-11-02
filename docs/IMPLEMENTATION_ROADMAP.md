@@ -10,10 +10,10 @@
 
 通过标准：离线夹具能够从“未执行”变为“完成视频”，两个普通分支SHA不同，重新扫描为0；故障夹具会跳过失败行并继续。
 
-## 阶段B：GitHub私有仓库
+## 阶段B：GitHub公开仓库
 
 1. 初始化Git并提交脱敏代码。
-2. 创建私有仓库`ai-graphic-video-orchestrator`。
+2. 创建公开仓库`ai-graphic-video-orchestrator`；真实飞书资源标识只写入目标电脑的Git忽略配置。
 3. 推送`main`。
 4. 从另一个空目录重新clone，执行`bootstrap.sh`和全部离线测试。
 5. GitHub Actions只运行离线测试和扫描，不接触飞书、ChatGPT或EGO。
@@ -50,7 +50,7 @@
 
 ## 版本门禁
 
-- `v0.1.0-rc1`：离线合同通过并上传私有GitHub。
+- `v0.1.0-rc1`：离线合同通过并上传GitHub；正式开放前完成全历史密钥扫描。
 - `v0.1.0-rc2`：Harness/Honey三路线通过。
 - `v0.1.0-rc3`：Work原生或桥接三路线通过。
 - `v0.1.0`：双引擎各自从空目录安装成功，并完成生产前受控批次。

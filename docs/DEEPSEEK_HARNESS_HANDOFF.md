@@ -6,7 +6,7 @@
 
 ## 一、Windows一次性安装
 
-1. 在目标电脑克隆本仓库的私有GitHub地址。
+1. 在目标电脑直接克隆本仓库的公开GitHub地址，无需GitHub登录。
 2. 确认Python 3.9以上、Git和FFmpeg可用，尤其`ffprobe -version`可正常执行。
 3. 在PowerShell里执行：
 
@@ -16,7 +16,7 @@ Set-ExecutionPolicy -Scope Process Bypass
 .\scripts\setup_windows_feishu.ps1
 ```
 
-`setup_windows_feishu.ps1`会建立本机私有配置、请求唯一ActorID、在Windows凭据管理器保存App Secret，并只读执行飞书`doctor`和`discover`。脚本不会打开生产开关。
+`setup_windows_feishu.ps1`会建立本机私有配置、请求唯一ActorID及飞书App ID/Base App Token/Table ID、在Windows凭据管理器保存App Secret，并只读执行飞书`doctor`和`discover`。脚本不会打开生产开关。
 
 4. App Secret只在Windows电脑本机安全输入，不得发到Harness对话、GitHub、Markdown或日志。
 5. 飞书管理端还必须确认应用已发布、有多维表格编辑权限，并被添加为目标Base的可编辑文档应用/协作者。完整门禁见`docs/FEISHU_PREPARATION.md`。

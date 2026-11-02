@@ -1,6 +1,9 @@
 [CmdletBinding()]
 param(
-    [string]$ActorId
+    [string]$ActorId,
+    [string]$AppId,
+    [string]$BaseAppToken,
+    [string]$TableId
 )
 
 $ErrorActionPreference = "Stop"
@@ -26,6 +29,23 @@ if (-not $ActorId) {
 if ($ActorId -notmatch '^[A-Za-z0-9._|:-]+$') {
     throw "ActorID只允许字母、数字、点、下划线、竖线、冒号和连字符。"
 }
+if (-not $AppId) {
+    $AppId = Read-Host "请输入飞书应用App ID（不是App Secret）"
+}
+if (-not $BaseAppToken) {
+    $BaseAppToken = Read-Host "请输入目标多维表格Base App Token"
+}
+if (-not $TableId) {
+    $TableId = Read-Host "请输入目标业务数据表Table ID"
+}
+if (-not $AppId -or -not $BaseAppToken -or -not $TableId) {
+    throw "FEISHU_RESOURCE_ID_MISSING：App ID、Base App Token和Table ID都不能为空。"
+}
+foreach ($Value in @($AppId, $BaseAppToken, $TableId)) {
+    if ($Value -notmatch '^[A-Za-z0-9_-]+$') {
+        throw "FEISHU_RESOURCE_ID_INVALID：飞书资源标识只允许字母、数字、下划线和连字符。"
+    }
+}
 
 $ConfigTarget = Join-Path $RepoRoot "config\config.local.yaml"
 if (-not (Test-Path $ConfigTarget)) {
@@ -34,6 +54,14 @@ if (-not (Test-Path $ConfigTarget)) {
 $Yaml = Get-Content $ConfigTarget -Raw -Encoding UTF8
 $ActorPattern = [System.Text.RegularExpressions.Regex]::new('(?m)^(\s*actor_id:\s*).+$')
 $Yaml = $ActorPattern.Replace($Yaml, "`$1$ActorId", 1)
+$AppIdPattern = [System.Text.RegularExpressions.Regex]::new('(?m)^(\s*app_id:\s*).+$')
+$Yaml = $AppIdPattern.Replace($Yaml, "`$1$AppId", 1)
+$AccountPattern = [System.Text.RegularExpressions.Regex]::new('(?m)^(\s*account:\s*).+$')
+$Yaml = $AccountPattern.Replace($Yaml, "`$1$AppId", 1)
+$AppTokenPattern = [System.Text.RegularExpressions.Regex]::new('(?m)^(\s*app_token:\s*).+$')
+$Yaml = $AppTokenPattern.Replace($Yaml, "`$1$BaseAppToken", 1)
+$TableIdPattern = [System.Text.RegularExpressions.Regex]::new('(?m)^(\s*table_id:\s*).+$')
+$Yaml = $TableIdPattern.Replace($Yaml, "`$1$TableId", 1)
 [System.IO.File]::WriteAllText($ConfigTarget, $Yaml, [System.Text.UTF8Encoding]::new($false))
 
 if (-not ("GvflowCredentialStore" -as [type])) {
@@ -100,7 +128,7 @@ $SecureSecret = Read-Host "请在本机直接输入飞书应用App Secret（不�
 $SecretPointer = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($SecureSecret)
 try {
     $PlainSecret = [Runtime.InteropServices.Marshal]::PtrToStringBSTR($SecretPointer)
-    [GvflowCredentialStore]::Write("gvflow-feishu-app-secret", "cli_aafee2971478dbcf", $PlainSecret)
+    [GvflowCredentialStore]::Write("gvflow-feishu-app-secret", $AppId, $PlainSecret)
 } finally {
     if ($SecretPointer -ne [IntPtr]::Zero) {
         [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($SecretPointer)

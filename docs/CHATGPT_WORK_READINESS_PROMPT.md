@@ -14,7 +14,7 @@ https://github.com/574210187-ship-it/ai-graphic-video-orchestrator
 5. docs/FEISHU_PREPARATION.md
 
 二、先列出你当前真实可用的能力，不得猜测
-1. 是否能读取私有GitHub仓库；
+1. 是否能读取公开GitHub仓库；
 2. 是否能读取本地task_manifest.json和execution_plan.json；
 3. 是否能创建并持续控制普通Chat子聊天；
 4. 是否能上传对标图片/视频并把MP4.zip下载到明确路径；

@@ -24,7 +24,7 @@
 前置环境：Python 3.9以上、Git、FFmpeg（命令行可找到`ffprobe`）。EGO和ChatGPT登录只在真实网页测试时需要。
 
 ```bash
-git clone <仓库地址>
+git clone https://github.com/574210187-ship-it/ai-graphic-video-orchestrator.git
 cd ai-graphic-video-orchestrator
 ./scripts/bootstrap.sh
 cp config/example.yaml config/config.local.yaml
@@ -42,7 +42,7 @@ Set-ExecutionPolicy -Scope Process Bypass
 .\scripts\setup_windows_feishu.ps1
 ```
 
-脚本只做安装、Windows凭据库保密和飞书只读盘点；写权限还必须用专用测试记录验证。完整前置见[docs/FEISHU_PREPARATION.md](docs/FEISHU_PREPARATION.md)。
+仓库为公开仓库，无需GitHub登录即可克隆。脚本会要求在目标Windows本机填写App ID、Base App Token、Table ID，并把App Secret只保存在Windows凭据管理器；写权限还必须用专用测试记录验证。完整前置见[docs/FEISHU_PREPARATION.md](docs/FEISHU_PREPARATION.md)。
 
 ## 最小验证
 

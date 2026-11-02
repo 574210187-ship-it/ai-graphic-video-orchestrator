@@ -11,4 +11,8 @@ def test_windows_harness_example_parses_without_resolving_secret():
 
     assert config["provider"]["secret"]["backend"] == "windows_credential"
     assert config["provider"]["secret"]["target"] == "gvflow-feishu-app-secret"
+    assert config["provider"]["app_id"] == "replace-feishu-app-id"
+    assert config["provider"]["secret"]["account"] == "replace-feishu-app-id"
+    assert config["provider"]["app_token"] == "replace-base-app-token"
+    assert config["provider"]["table_id"] == "replace-business-table-id"
     assert config["production"]["enabled"] is False

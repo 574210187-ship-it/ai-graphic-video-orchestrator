@@ -9,9 +9,8 @@ https://github.com/574210187-ship-it/ai-graphic-video-orchestrator
 当前电脑是Windows，且EGO已安装。本轮目标是“Windows安装、飞书准备和测试门禁”，不是直接全量写生产表。你必须亲自执行PowerShell命令、读取真实输出并留下文件证据，不得只回复计划。EGO已安装不代表飞书已可读写。
 
 一、取得代码
-1. 在当前电脑选择一个独立目录克隆上述私有仓库；如果已经存在，只允许fast-forward到origin/main，不要覆盖本机私有配置和runs。
-2. 若GitHub私有仓库访问失败，只报告“需要当前电脑完成GitHub登录/授权”，不要索取、展示或保存token。
-3. 完整读取仓库根目录AGENTS.md、README.zh-CN.md、skills/graphic-video-orchestrator/SKILL.md、三个references，以及docs/DEEPSEEK_HARNESS_HANDOFF.md。
+1. 在当前电脑选择一个独立目录克隆上述公开仓库，无需GitHub登录；如果已经存在，只允许fast-forward到origin/main，不要覆盖本机私有配置和runs。
+2. 完整读取仓库根目录AGENTS.md、README.zh-CN.md、skills/graphic-video-orchestrator/SKILL.md、三个references，以及docs/DEEPSEEK_HARNESS_HANDOFF.md。
 
 二、离线门禁
 1. 在PowerShell执行`Set-ExecutionPolicy -Scope Process Bypass`，再运行`.\scripts\bootstrap.ps1`。
@@ -25,7 +24,7 @@ https://github.com/574210187-ship-it/ai-graphic-video-orchestrator
 
 三、本机私有配置与飞书准备
 1. 完整读取`docs/FEISHU_PREPARATION.md`，然后运行`.\scripts\setup_windows_feishu.ps1`。
-2. 脚本会从`config\jiang-lawyer-harness.windows.example.yaml`建立被Git忽略的`config\config.local.yaml`，并要求这台电脑的唯一ActorID。
+2. 脚本会从`config\jiang-lawyer-harness.windows.example.yaml`建立被Git忽略的`config\config.local.yaml`，并要求这台电脑的唯一ActorID、飞书App ID、Base App Token和业务Table ID。
 3. App Secret只能由用户在Windows本机安全输入，并存入Windows凭据管理器；不得索取、回显或记录Secret。
 4. 脚本会执行在线doctor和只读discover。如果提示权限缺失，只说明缺少的scope或目标Base文档权限，不得绕过。
 5. 保持`production.enabled=false`。
@@ -49,5 +48,5 @@ https://github.com/574210187-ship-it/ai-graphic-video-orchestrator
 七、结束条件和回执
 本轮只有以下全部完成才能回复：代码版本、Harness Skill实际安装路径、离线测试结果、在线doctor结果、只读候选总数、写权限专用记录结果或明确的“待提供专用record_id”、三条建议测试record_id及其来源SHA/路线判断/EGO能力证据。所有证据写到`runs/readiness-<日期时间>/READINESS_RESULT.md`，并在回复中给出该文件绝对路径。
 
-本轮禁止：production.enabled=true、飞书写入、正式生图/生视频、全量领取、启动后台无限驱动、只看到PID就报告运行。遇到单条来源问题继续盘点其他候选；只有GitHub登录、飞书权限或EGO整体登录等全局人工阻塞才允许提前停止。
+本轮禁止：production.enabled=true、飞书写入、正式生图/生视频、全量领取、启动后台无限驱动、只看到PID就报告运行。遇到单条来源问题继续盘点其他候选；只有飞书权限或EGO整体登录等全局人工阻塞才允许提前停止。
 ```

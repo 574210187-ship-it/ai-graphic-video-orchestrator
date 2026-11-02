@@ -13,13 +13,13 @@ production:
 
 provider:
   type: feishu
-  app_id: cli_aafee2971478dbcf
+  app_id: replace-feishu-app-id
   secret:
     backend: windows_credential
     target: gvflow-feishu-app-secret
-    account: cli_aafee2971478dbcf
-  app_token: TRbibTAzmagpV4shYbcchcIVnhd
-  table_id: tblgYhWtUJDDKJjJ
+    account: replace-feishu-app-id
+  app_token: replace-base-app-token
+  table_id: replace-business-table-id
   api_root: https://open.feishu.cn/open-apis
 
 fields:

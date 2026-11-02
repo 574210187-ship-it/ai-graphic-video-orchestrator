@@ -7,11 +7,11 @@
 https://github.com/574210187-ship-it/ai-graphic-video-orchestrator
 
 一、获取合同
-1. 从私有GitHub获取或fast-forward到`origin/main`，保留当前环境的私有配置和运行记录。如果无权读私有仓库，请求用户完成GitHub连接授权，不索取token。
+1. 从公开GitHub获取或fast-forward到`origin/main`，无需GitHub登录；保留当前环境的私有配置和运行记录。
 2. 完整读取`AGENTS.md`、`README.zh-CN.md`、`skills/graphic-video-orchestrator/SKILL.md`及其全部references、`docs/CHATGPT_WORK_HANDOFF.md`、`docs/FEISHU_PREPARATION.md`、`docs/JIANG_LAWYER_SCOPE_POLICY.md`。
 
 二、自动补齐执行能力
-1. 先盘点当前真实能力：命令执行、持久文件、私有GitHub、创建/继续普通Chat子聊天、附件上传、MP4.zip下载、本地路径返回、飞书读写和同行回读。不得把未验证能力写成“已有”。
+1. 先盘点当前真实能力：命令执行、持久文件、公开GitHub读取、创建/继续普通Chat子聊天、附件上传、MP4.zip下载、本地路径返回、飞书读写和同行回读。不得把未验证能力写成“已有”。
 2. 优先使用仓库`gvflow` CLI作为确定性内核。如当前Work支持下载和命令执行，自行安装Python依赖、FFmpeg和项目包，执行测试、doctor和discover。
 3. 如果只能使用飞书MCP，必须证明MCP能完整支持：分页读取、单行回读、来源附件下载、MP4上传到目标Base、附件/状态/备注/执行记录更新和再回读。只读MCP不合格。
 4. 如果CLI或MCP能在当前权限内安装/连接，直接完成。如果必须用户做GitHub登录、飞书连接授权、scope开通、Base文档应用权限、本地安全输入Secret、ChatGPT登录或管理员操作，合并为一次最小人工请求，用户完成后从原恢复点继续。不索取或显示token、Secret、cookie。

@@ -24,13 +24,13 @@ Set-ExecutionPolicy -Scope Process Bypass
 
 第二个脚本会：
 
-- 使用姜律师现行Base、业务表和字段模板；
+- 要求在本机填写飞书App ID、目标Base App Token和业务Table ID，并使用仓库中的字段模板；
 - 要求输入这台电脑唯一ActorID；
 - 在Windows凭据管理器中保存App Secret；
 - 保持`production.enabled=false`；
 - 执行在线doctor和只读discover。
 
-不要把App Secret粘贴给Harness。脚本会在Windows本机安全输入框中读取。
+不要把App Secret粘贴给Harness。脚本会在Windows本机安全输入框中读取。App ID、Base App Token和Table ID是资源标识，不是App Secret；它们写入被Git忽略的`config/config.local.yaml`。
 
 ### 写权限验证
 

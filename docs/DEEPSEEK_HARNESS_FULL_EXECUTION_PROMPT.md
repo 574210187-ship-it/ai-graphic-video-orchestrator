@@ -7,16 +7,15 @@
 https://github.com/574210187-ship-it/ai-graphic-video-orchestrator
 
 一、获取并固定代码
-1. 如果当前电脑没有仓库，克隆私有仓库；如果已有，保留`config/config.local.yaml`和`runs/`，只允许fast-forward到`origin/main`。
-2. 如果私有GitHub无权访问，请求用户只在当前电脑完成GitHub登录/授权；不索取token。
-3. 完整读取`AGENTS.md`、`README.zh-CN.md`、`skills/graphic-video-orchestrator/SKILL.md`与其全部references、`docs/DEEPSEEK_HARNESS_HANDOFF.md`、`docs/FEISHU_PREPARATION.md`、`docs/JIANG_LAWYER_SCOPE_POLICY.md`。
+1. 如果当前电脑没有仓库，直接克隆公开仓库，无需GitHub登录；如果已有，保留`config/config.local.yaml`和`runs/`，只允许fast-forward到`origin/main`。
+2. 完整读取`AGENTS.md`、`README.zh-CN.md`、`skills/graphic-video-orchestrator/SKILL.md`与其全部references、`docs/DEEPSEEK_HARNESS_HANDOFF.md`、`docs/FEISHU_PREPARATION.md`、`docs/JIANG_LAWYER_SCOPE_POLICY.md`。
 
 二、自动补齐前置
 1. 自行检查Git、Python 3.9+、FFmpeg/ffprobe、PowerShell、EGO和ChatGPT登录。能在当前权限内安装的依赖直接安装，不得只报“缺失”而不尝试。
 2. 执行`Set-ExecutionPolicy -Scope Process Bypass`和`.\scripts\bootstrap.ps1`。
 3. 核对Harness实际自定义Skill目录，再用`.venv\Scripts\python.exe scripts\install_skill.py --target <真实技能根目录>`安装；不得猜路径。
-4. 执行`.\scripts\setup_windows_feishu.ps1`。App Secret只允许用户在Windows本机的安全提示中输入；不得在聊天中索取、回显或保存。
-5. 如果缺飞书scope、目标Base文档权限、GitHub登录、EGO/ChatGPT登录或管理员操作，把所有必须人工完成的内容合并为一次最小请求，说清具体操作；用户完成后从原恢复点继续，不从头重来。
+4. 执行`.\scripts\setup_windows_feishu.ps1`，在本机填写App ID、Base App Token和Table ID。App Secret只允许用户在Windows本机的安全提示中输入；不得在聊天中索取、回显或保存。
+5. 如果缺飞书scope、目标Base文档权限、EGO/ChatGPT登录或管理员操作，把所有必须人工完成的内容合并为一次最小请求，说清具体操作；用户完成后从原恢复点继续，不从头重来。
 6. 运行13项或更新版本的全部测试、Secret扫描、离线doctor、在线doctor和只读discover。
 7. 若没有专用空成品测试记录，请求用户提供一个该record_id；不得使用生产行代替。执行`verify-write-access`，必须确认附件上传、字段写入、实时回读和恢复为空全部成功。
 8. 只有上述门禁全部通过，才可把本机私有`config/config.local.yaml`的`production.enabled`设为`true`。
@@ -41,7 +40,7 @@ https://github.com/574210187-ship-it/ai-graphic-video-orchestrator
 4. 生图只上传对标完整页；固定背景、人物照、MD和视频ZIP都只按Space精确路径调用。视频源在本分支生视频步骤只上传一次原视频；静态图源不新增附件。
 5. 下载真实MP4后执行`record-result`和`writeback`。普通路线必须同时有01、02两支且SHA-256不同；单页中心律师路线需1支。
 6. 只有附件、状态、ZED备注和执行记录全部写入且同行实时回读一致，才记录完成并提交背景游标。
-7. 单行内容审核、素材异常或分支失败只保存证据和salvage，进入恢复队列并继续下一行。只有GitHub/飞书/EGO/ChatGPT登录、权限、磁盘或唯一写入者冲突等全局问题才能停止全批。
+7. 单行内容审核、素材异常或分支失败只保存证据和salvage，进入恢复队列并继续下一行。只有飞书/EGO/ChatGPT登录、权限、磁盘或唯一写入者冲突等全局问题才能停止全批。
 8. 首轮结束后对恢复队列做有界恢复。无法解决的行必须有准确错误码、证据和下一步，但不得阻断其他行。
 9. 最后再次从飞书首页扫描到末页。只有可执行未完成数为0，且所有阻塞行有完整证据，才能结束。
 
