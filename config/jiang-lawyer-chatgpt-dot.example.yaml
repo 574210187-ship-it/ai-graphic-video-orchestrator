@@ -1,0 +1,8 @@
+extends: ./jiang-lawyer-harness.example.yaml
+
+project:
+  actor_id: replace-with-unique-chatgpt-dot-actor-id
+
+engine:
+  name: chatgpt-dot-ego
+  mode: agent_native

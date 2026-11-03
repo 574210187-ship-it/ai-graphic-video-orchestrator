@@ -1,0 +1,8 @@
+extends: ./jiang-lawyer-harness.example.yaml
+
+project:
+  actor_id: replace-with-unique-muse-actor-id
+
+engine:
+  name: muse-ego
+  mode: agent_native

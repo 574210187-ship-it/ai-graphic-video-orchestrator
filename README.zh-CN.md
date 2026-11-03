@@ -6,8 +6,11 @@
 
 - 网页版 ChatGPT Work：负责任务判断、子聊天调度和异常修复；原生子聊天能力不足时使用本地 Work Bridge。
 - DeepSeek Harness/Honey：负责全流程调度，通过 EGO 浏览器操作 ChatGPT 普通聊天完成生图和生视频。
+- Muse：通过云电脑和 EGO 操作 ChatGPT 普通聊天；必须使用统一控制器合同，不能绕过 Muse 直接操作浏览器。
+- Grok Bot：使用其可用的浏览器/命令通道或本地 Bridge，调用同一 `gvflow` 核心。
+- ChatGPT Dot：使用 Dot 可用的浏览器/命令通道或本地 Bridge，调用同一 `gvflow` 核心。
 
-两个方向必须共用同一份业务配置、任务清单、状态机、产物校验和飞书写回器。
+所有方向必须共用同一份业务配置、任务清单、状态机、产物校验和飞书写回器；只能替换网页控制器，不能各自发明业务规则。
 
 现行候选口径取两个条件的并集：先处理`二次分类型=图文`，再处理`类型=图文`且二次分类型为空或其他值的记录；两项同时满足只领取一次。分类命中后还必须有唯一来源，并且`成品`、`已发布`两列都没有视频。
 
@@ -95,6 +98,11 @@ Set-ExecutionPolicy -Scope Process Bypass
 - ChatGPT Work交接：[docs/CHATGPT_WORK_HANDOFF.md](docs/CHATGPT_WORK_HANDOFF.md)
 - ChatGPT Work准备检查复制指令：[docs/CHATGPT_WORK_READINESS_PROMPT.md](docs/CHATGPT_WORK_READINESS_PROMPT.md)
 - ChatGPT Work自动补齐通道并执行全流程：[docs/CHATGPT_WORK_FULL_EXECUTION_PROMPT.md](docs/CHATGPT_WORK_FULL_EXECUTION_PROMPT.md)
+- 三类Bot统一控制器合同：[docs/UNIVERSAL_BOT_CONTROLLER_CONTRACT.md](docs/UNIVERSAL_BOT_CONTROLLER_CONTRACT.md)
+- Muse全流程指令：[docs/MUSE_FULL_EXECUTION_PROMPT.md](docs/MUSE_FULL_EXECUTION_PROMPT.md)
+- Grok Bot全流程指令：[docs/GROK_BOT_FULL_EXECUTION_PROMPT.md](docs/GROK_BOT_FULL_EXECUTION_PROMPT.md)
+- ChatGPT Dot全流程指令：[docs/CHATGPT_DOT_FULL_EXECUTION_PROMPT.md](docs/CHATGPT_DOT_FULL_EXECUTION_PROMPT.md)
+- 控制器缺口审计：[docs/CONTROLLER_GAP_AUDIT_20261104.md](docs/CONTROLLER_GAP_AUDIT_20261104.md)
 - 飞书认证、权限与写入测试：[docs/FEISHU_PREPARATION.md](docs/FEISHU_PREPARATION.md)
 - 姜律师候选行筛选口径：[docs/JIANG_LAWYER_SCOPE_POLICY.md](docs/JIANG_LAWYER_SCOPE_POLICY.md)
 - 原图文接手窗口的公开长期记忆：[docs/WINDOW_MEMORY_GRAPHIC_TAKEOVER.md](docs/WINDOW_MEMORY_GRAPHIC_TAKEOVER.md)

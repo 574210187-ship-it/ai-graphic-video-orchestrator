@@ -78,3 +78,7 @@ Set-ExecutionPolicy -Scope Process Bypass
 ## 五、必须保留的痕迹
 
 每行至少保留：来源token/字节/SHA、第0阶段decision、参考页SHA、execution_plan、聊天URL、最终MP4字节/SHA、飞书远端file_token、字段回读、事件JSONL、失败与恢复记录。不得删除云端聊天，除非用户另行明确要求。
+
+## 六、与 Muse、Grok Bot、ChatGPT Dot 协作时
+
+Harness 必须遵守[三类 Bot 通用控制器合同](UNIVERSAL_BOT_CONTROLLER_CONTRACT.md)。没有共享跨电脑租约时，不得与其他控制器同时写同一个 Base；其他 Bot 只能执行只读 doctor/discover 或保持停用。

@@ -11,3 +11,6 @@
 9. 不输出或提交密钥、token、cookie、真实业务媒体和本机私有配置。
 10. 真实飞书生产前必须先通过在线`doctor`、只读`discover`和专用测试记录`verify-write-access`；不得用生产行做写权限探测。
 11. EGO已安装只证明网页执行入口可能存在，不等于飞书认证、Base权限、附件上传或写回已接通。
+12. Muse、Grok Bot、ChatGPT Dot、ChatGPT Work 和 DeepSeek Harness 都必须遵守`docs/UNIVERSAL_BOT_CONTROLLER_CONTRACT.md`；网页回复、PID或“正在输入”不是完成证据。
+13. 没有跨电脑共享租约时，同一Base只能有一个生产写入者；其他控制器只能只读检查或停用。
+14. 单行失败必须落入持久恢复队列并继续下一行；控制器不得完成一行后等待用户再次发指令。

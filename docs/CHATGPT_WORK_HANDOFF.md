@@ -38,3 +38,7 @@ Work控制器先使用一条专用测试记录验证以下能力：
 ## 与Harness并行时
 
 两套引擎不能领取同一个record_id。测试阶段使用不同专用记录；生产阶段必须静态分片或使用跨机器中心租约。本仓库当前默认只提供本机单写者锁，因此没有中心租约时必须一次只启用一个生产控制器。
+
+## 与 Muse、Grok Bot、ChatGPT Dot 协作时
+
+这三个控制器必须遵守[三类 Bot 通用控制器合同](UNIVERSAL_BOT_CONTROLLER_CONTRACT.md)。它们可以替换网页操作层，但不能替换 `gvflow` 的候选、状态、产物和写回合同。没有共享跨电脑租约时，Work、Muse、Grok Bot、Dot、Harness 只能有一个处于生产写入状态。
